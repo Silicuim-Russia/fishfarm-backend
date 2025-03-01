@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .services.helpers import PoolManagment, Pool_Values_Managment, Pool_Statistic_Managment
+from .services.helpers import Pool_Managment, Pool_Values_Managment, Pool_Statistic_Managment
 
 
 class ParameterSerializer(serializers.Serializer):
@@ -21,7 +21,7 @@ class PoolStatusSerializer(serializers.Serializer):
     nitrite_content = ParameterSerializer()
 
     def get_parameter_data(self, pool_id, param_name):
-        pool_mgr = PoolManagment()
+        pool_mgr = Pool_Managment()
         values_mgr = Pool_Values_Managment()
         stats_mgr = Pool_Statistic_Managment()
 
