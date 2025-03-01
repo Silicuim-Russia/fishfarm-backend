@@ -1,16 +1,15 @@
+from django.db.models import *
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
-from .services.helpers import Pool_Statistic_Managment
+from rest_framework.permissions import IsAuthenticated
+
 from .serializers import *
-<<<<<<< HEAD
 from .pidor import update, get_all_pools
-=======
->>>>>>> 2b7ef3cc31d3851570c211ab544276e0195902a1
 
+class AllPools(APIView):
+    permission_classes = [IsAuthenticated]
 
-<<<<<<< HEAD
     def get(self, request, *args, **kwargs):
         # pools = Pool.objects.all()
         # serializer = PoolsSerializer(pools, many=True)
@@ -19,16 +18,6 @@ from .pidor import update, get_all_pools
         return Response(get_all_pools())
     def post(self, request, *args, **kwargs):
         return Response(update(request.data))
-=======
-# class AllPools(APIView):
-#     permission_classes = [IsAuthenticated]
-#
-#     def get(self, request, *args, **kwargs):
-#         pools = Pool.objects.all()
-#         serializer = PoolsSerializer(pools, many=True)
-#
-#         return Response({'all-pools': serializer.data})
->>>>>>> 2b7ef3cc31d3851570c211ab544276e0195902a1
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

@@ -1,3 +1,4 @@
+
 from ..models import Pool, PoolOptimalValues, PoolStatistic
 
 
@@ -115,11 +116,10 @@ class Pool_Values_Managment:
 class Pool_Statistic_Managment:
     def __init__(self):
         self.data = PoolStatistic.objects
-        self.pools = Pool.objects
     def take_data(self, pool_id):
-        pool_id = self.pools.get(pool_id)
         if self.data.filter(pool_id=pool_id).exists():
-            return self.data.filter(pool_id=pool_id)
+            to_return = self.data.filter(pool_id=pool_id)
+            return to_return
         else:
             print(f'pool {pool_id} does`t exists ')
             return []
