@@ -1,10 +1,21 @@
 from django.db import models
 
+from graf import model
+
 
 class Pool(models.Model):
     pool_id = models.AutoField(primary_key=True)
     pool_name = models.CharField(max_length=100)
     pool_desc = models.CharField(max_length=255)
+    temperature_sensor_id = models.IntegerField()
+    oxygen_saturation_sensor_id = models.IntegerField()
+    pH_sensor_id = models.IntegerField()
+    orp_sensor_id = models.IntegerField()
+    salinity_sensor_id = models.IntegerField()
+    water_level_sensor_id = models.IntegerField()
+    turbidity_sensor_id = models.IntegerField()
+    ammonia_content_sensor_id = models.IntegerField()
+    nitrite_content_sensor_id = models.IntegerField()
 
     def __str__(self):
         return f"{self.pool_id} (№{self.pool_name}, {self.pool_desc})"
@@ -29,15 +40,7 @@ class PoolOptimalValues(models.Model):
     max_ammonia_content = models.FloatField()
     min_nitrite_content = models.FloatField()
     max_nitrite_content = models.FloatField()
-    temperature_sensor_id = models.IntegerField()
-    oxygen_saturation_sensor_id = models.IntegerField()
-    pH_sensor_id = models.IntegerField()
-    orp_sensor_id = models.IntegerField()
-    salinity_sensor_id = models.IntegerField()
-    water_level_sensor_id = models.IntegerField()
-    turbidity_sensor_id = models.IntegerField()
-    ammonia_content_sensor_id = models.IntegerField()
-    nitrite_content_sensor_id = models.IntegerField()
+
 
 
 class PoolStatistic(models.Model):
@@ -46,8 +49,9 @@ class PoolStatistic(models.Model):
     temperature = models.FloatField()
     oxygen_saturation = models.FloatField()
     pH = models.FloatField()
+    orp = model.FloatField()
     salinity = models.FloatField()
-    water_lavel = models.FloatField()
+    water_level = models.FloatField()
     turbidity = models.FloatField()
     ammonia_content = models.FloatField()
     nitrite_content = models.FloatField()
