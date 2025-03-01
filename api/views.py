@@ -16,4 +16,4 @@ class AllPools(APIView):
         pools = Pool.objects.all()
         serializer = PoolsSerializer(pools, many=True)
 
-        return Response({'all-pools': serializer.data})
+        return Response({'all_pools': serializer.data})
