@@ -1,5 +1,6 @@
-from .services.helpers import Pool_Values_Managment
+from .services.helpers import Pool_Values_Managment, Pool_Managment
 value_helper = Pool_Values_Managment()
+pools_helper = Pool_Managment()
 def update(data: dict):
     if data['sensor'] == 'temperature':
         status = value_helper.write_data(pool_id=data['pool_id'], flag=data['sensor'], min_temperature=data['minValue'],max_temperature=data['maxValue'], min_oxygen_saturation=None,
@@ -85,3 +86,13 @@ def update(data: dict):
         print("Check data!!!")
         return {'is_updated':False, 'message':'Look at console\nCheck data!!!'}
     return {'is_updated':True, 'message':f'pool_data {data['pool_id']} changed category:{data['sensor']}'}
+def get_all_pools():
+    to_return = list()
+    data = pools_helper.all_data()
+    for i in range(len(data[0])):
+        to_return.append({
+            'pool_id':data[0][i]['pool_id'],
+            'pool_name':data[1][i]['pool_name'],
+            'pool_desc':data[-1][i]['pool_desc']
+        })
+    return {'data_type':f'{to_return}'}

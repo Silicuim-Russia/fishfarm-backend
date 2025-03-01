@@ -1,9 +1,13 @@
 from ..models import Pool, PoolOptimalValues, PoolStatistic
 
 
-class PoolManagment:
+class Pool_Managment:
     def __init__(self):
         self.data = Pool.objects
+    def all_data(self):
+        # return self.data.all()
+        return (self.data.values('pool_id'), self.data.values('pool_name'),
+                self.data.values('pool_desc'))
     def take_data(self, pool_id):
         if self.data.filter(pool_id=pool_id).exists():
             to_return = self.data.filter(pool_id=pool_id)
