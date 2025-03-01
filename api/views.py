@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import *
-
+from .pidor import update
 
 class AllPools(APIView):
     permission_classes = [IsAuthenticated]
@@ -13,6 +13,9 @@ class AllPools(APIView):
     def get(self, request, *args, **kwargs):
         pools = Pool.objects.all()
         serializer = PoolsSerializer(pools, many=True)
+        return Response({'all_pools':serializer.data})
+    def post(self, request, *args, **kwargs):
+        return Response(update(request.data))
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
