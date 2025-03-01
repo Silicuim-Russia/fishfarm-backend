@@ -50,6 +50,8 @@ class PoolManagment:
                 nitrite_content_sensor_id =nitrite_content_sensor_id
             )
             new_pool.save()
+            new_pool_values = PoolOptimalValues(pool_id=pool_id)
+            new_pool_values.save()
             print(f'pool {pool_id} successful create')
             return True
 class Pool_Values_Managment:
@@ -62,41 +64,50 @@ class Pool_Values_Managment:
         else:
             print(f'pool {pool_id} does`t exists ')
             return []
-    def write_data(self, pool_id, timestamp, temperature,
-                   oxygen_saturation, pH, orp, salinity, water_level,
-                   turbidity, ammonia_content, nitrite_content):
-        if self.data.filter(pool_id=pool_id).exists():
-            now_data = self.data.filter(pool_id=pool_id)
-            now_data.timestamp = timestamp
-            now_data.temperature = temperature
-            now_data.oxygen_saturation = oxygen_saturation
-            now_data.pH = pH
-            now_data.orp = orp
-            now_data.salinity = salinity
-            now_data.water_level = water_level
-            now_data.turbidity = turbidity
-            now_data.ammonia_content = ammonia_content
-            now_data.nitrite_content = nitrite_content
-            now_data.save()
-            print(f'pool data {pool_id} successfully rewrite')
-            return True
+    def write_data(self, pool_id, flag, min_temperature, max_temperature, min_oxygen_saturation,
+                   max_oxygen_saturation, min_pH, max_pH, min_orp, max_orp, min_salinity,
+                   max_salinity, min_water_level, max_water_level, min_turbidity,
+                   max_turbidity, min_ammonia_content, max_ammonia_content,
+                   min_nitrite_content, max_nitrite_content):
+        if self.data.filter(pool_id=pool_id).exists() == False:
+            print(f'pool {pool_id} does`t exist')
+            return False
         else:
-            new_data = PoolOptimalValues(
-                pool_id=pool_id,
-                timestamp=timestamp,
-                temperature=temperature,
-                oxygen_saturation=oxygen_saturation,
-                pH=pH,
-                orp=orp,
-                salinity=salinity,
-                water_level=water_level,
-                turbidity=turbidity,
-                ammonia_content=ammonia_content,
-                nitrite_content=nitrite_content
-            )
-            new_data.save()
-            print(f'pool data {pool_id} successfully create')
+            now_data = self.data.filter(pool_id=pool_id)
+            if flag == 'temperature':
+                now_data.min_temperature = min_temperature
+                now_data.max_temperature = max_temperature
+            elif flag == 'oxygen_saturation':
+                now_data.min_oxygen_saturation = min_oxygen_saturation
+                now_data.max_oxygen_saturation = max_oxygen_saturation
+            elif flag == 'pH':
+                now_data.min_pH = min_pH
+                now_data.max_pH = max_pH
+            elif flag == 'orp':
+                now_data.min_orp = min_orp
+                now_data.max_orp = max_orp
+            elif flag == 'salinity':
+                now_data.min_salinity = min_salinity
+                now_data.max_salinity = max_salinity
+            elif flag == 'water_level':
+                now_data.min_water_level = min_water_level
+                now_data.max_water_level = max_water_level
+            elif flag == 'turbidity':
+                now_data.min_turbidity = min_turbidity
+                now_data.max_turbidity = max_turbidity
+            elif flag == 'ammonia_content':
+                now_data.min_ammonia_content = min_ammonia_content
+                now_data.max_ammonia_content = max_ammonia_content
+            elif flag == 'nitrite_content':
+                now_data.min_nitrite_content = min_nitrite_content
+                now_data.max_nitrite_content = max_nitrite_content
+            else:
+                print('Wrong flag')
+                return False
+            now_data.save()
+            print(f'pool optimal values {pool_id} updated successfully')
             return True
+
 class Pool_Statistic_Managment:
     def __init__(self):
         self.data = PoolStatistic.objects
@@ -126,4 +137,4 @@ class Pool_Statistic_Managment:
         )
         new_data.save()
         print(f'pool {pool_id} successful create')
-        return True 
+        return True
