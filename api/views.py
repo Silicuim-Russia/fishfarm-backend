@@ -14,12 +14,6 @@ class AllPools(APIView):
         pools = Pool.objects.all()
         serializer = PoolsSerializer(pools, many=True)
 
-<<<<<<< HEAD
-        return Response({'all_pools': serializer.data})
-=======
-        return Response({'all-pools': serializer.data})
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_status(request):
@@ -94,4 +88,4 @@ def update_parameters(request):
     )
 
     return Response({'status': 'updated', 'pool_id': pool.pool_id})
->>>>>>> 167d6b0e376068a077e6c767bb7d429d6b9af947
+
