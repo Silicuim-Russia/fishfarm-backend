@@ -126,4 +126,4 @@ class Pool_Statistic_Managment:
         )
         new_data.save()
         print(f'pool {pool_id} successful create')
-        return 
+        return True 
