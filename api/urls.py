@@ -13,5 +13,6 @@ urlpatterns = [
     path('status/', StatusPool.as_view(), name='status'),
     # path('update/', update_parameters, name='update'),
     path('update/', OptimalValues.as_view(), name='update'),
-    path('setting/', AllPools.as_view(), name='setting')
+    path('setting/', AllPools.as_view(), name='setting'),
+    path('stream/', stream_video, name='stream_video'),
 ]
