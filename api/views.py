@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import *
-from .pidor import update, get_all_pools, get_status
+from .pidor import update, get_all_pools, get_status, setting
 
 class AllPools(APIView):
     permission_classes = [IsAuthenticated]
@@ -17,8 +17,11 @@ class AllPools(APIView):
 
         return Response(get_all_pools())
     def post(self, request, *args, **kwargs):
+        return Response(setting(request.data))
+class OptimalValues(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request, *args, **kwargs):
         return Response(update(request.data))
-
 class StatusPool(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):

@@ -22,7 +22,7 @@ class Pool_Managment:
         else:
             print(f'pool {pool_id} does`t exists')
             return []
-    def write_data(self, pool_id, pool_name, pool_desc, url,
+    def write_new_data(self, pool_id, pool_name, pool_desc, url,
                    temperature_sensor_id, oxygen_saturation_sensor_id,
                    pH_sensor_id, orp_sensor_id, salinity_sensor_id,
                    water_level_sensor_id, turbidity_sensor_id,
@@ -65,6 +65,16 @@ class Pool_Managment:
             new_pool_values.save()
             print(f'pool {pool_id} successful create')
             return True
+    def setting_data(self, pool_id, pool_name, pool_desc):
+        if self.data.filter(pool_id=pool_id).exists():
+            now_data = self.data.get(pool_id=pool_id)
+            now_data.pool_name = pool_name
+            now_data.pool_desc = pool_desc
+            now_data.save()
+            return True
+        else:
+            print(f'pool {pool_id} does`t exists')
+            return False
 class Pool_Values_Managment:
     def __init__(self):
         self.data = PoolOptimalValues.objects

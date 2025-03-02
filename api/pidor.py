@@ -4,9 +4,15 @@ from .services.helpers import Pool_Values_Managment, Pool_Managment, Pool_Statis
 pools_helper = Pool_Managment()
 value_helper = Pool_Values_Managment()
 statistics_helper = Pool_Statistic_Managment()
+
+def setting(data:dict):
+    status = pools_helper.setting_data(data['pool_id'], data['pool_name'], data['pool_desc'])
+    if status:
+        return {'is_updated' : status, 'message' : f'pool {data['pool_id']} changed'}
+    else:
+        return {'is_updated': status, 'message': f'pool {data['pool_id']} does`t exist'}
 def update(data: dict):
     if data['sensor'] == 'temperature':
-        print('Here')
         status = value_helper.write_data(pool_id=data['pool_id'], flag=data['sensor'], min_temperature=data['minValue'],max_temperature=data['maxValue'], min_oxygen_saturation=None,
                    max_oxygen_saturation=None, min_pH=None, max_pH=None, min_orp=None, max_orp=None, min_salinity=None,
                    max_salinity=None, min_water_level=None, max_water_level=None, min_turbidity=None,
