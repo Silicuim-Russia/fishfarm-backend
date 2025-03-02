@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import *
-from .pidor import update, get_all_pools
+from .pidor import update, get_all_pools, get_status
 
 class AllPools(APIView):
     permission_classes = [IsAuthenticated]
@@ -19,19 +19,23 @@ class AllPools(APIView):
     def post(self, request, *args, **kwargs):
         return Response(update(request.data))
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_status(request):
-    pool_id = request.query_params.get('pool_id')
-    print(pool_id)
-    stats_mgr = Pool_Statistic_Managment()
-    print(stats_mgr)
-    all_stats = stats_mgr.take_data(pool_id)
-    print(all_stats)
-
-    serializer = PoolStatusSerializer(all_stats, many=True)
-    return Response({'status': serializer.data})
-
+class StatusPool(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, *args, **kwargs):
+        return Response(get_status(request.query_params.get('pool_id')))
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_status(request):
+#     # pool_id = request.query_params.get('pool_id')
+#     # print(pool_id)
+#     # stats_mgr = Pool_Statistic_Managment()
+#     # print(stats_mgr)
+#     # all_stats = stats_mgr.take_data(pool_id)
+#     # print(all_stats)
+#     #
+#     # serializer = PoolStatusSerializer(all_stats, many=True)
+#     # return Response({'status': serializer.data})
+#     return Response(request.data)
 
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])

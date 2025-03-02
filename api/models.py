@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Pool(models.Model):
-    pool_id = models.AutoField(primary_key=True, default='0')
+    pool_id = models.AutoField(primary_key=True, default=0)
     pool_name = models.CharField(max_length=100, default='Крутой бассейн')
     pool_desc = models.CharField(max_length=255, default='0 ряд, 0 секция')
     url = models.URLField(null=True)
@@ -21,7 +21,7 @@ class Pool(models.Model):
 
 
 class PoolOptimalValues(models.Model):
-    pool_id = models.ForeignKey(Pool, on_delete=models.CASCADE, default=0)
+    pool_id = models.AutoField(primary_key=True, default=0)
     min_temperature = models.FloatField(null=True, default=22.0)
     max_temperature = models.FloatField(null=True, default=24.0)
     min_oxygen_saturation = models.FloatField(null=True, default=7.5)
@@ -44,7 +44,7 @@ class PoolOptimalValues(models.Model):
 
 
 class PoolStatistic(models.Model):
-    pool_id = models.ForeignKey(Pool, on_delete=models.CASCADE, default=0)
+    pool_id = models.AutoField(primary_key=True, default=0)
     timestamp = models.DateTimeField(auto_now=True)
     temperature = models.FloatField(null=True)
     oxygen_saturation = models.FloatField(null=True)
