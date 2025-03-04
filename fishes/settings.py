@@ -150,6 +150,6 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
 
-ASGI_APPLICATION = 'stream_project.routing.application'
+ASGI_APPLICATION = 'fishes.routing.application'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

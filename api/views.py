@@ -1,18 +1,52 @@
 from rest_framework.views import APIView
-from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .pidor import update, get_all_pools, get_status, setting
 
+import os
 from django.http import JsonResponse
+from django.conf import settings
+from datetime import datetime, timedelta
+
 
 def stream_info(request):
-    return JsonResponse({
-        'hls_url': '/media/stream.m3u8',
+    # Получаем путь к HLS-плейлисту
+    hls_path = os.path.join(settings.MEDIA_ROOT, 'stream.m3u8')
+
+    # Проверяем существование файла
+    if not os.path.exists(hls_path):
+        return JsonResponse({
+            'error': 'Stream not found',
+            'status': 'inactive'
+        }, status=404)
+
+    # Получаем время последней модификации файла
+    last_modified = datetime.fromtimestamp(os.path.getmtime(hls_path))
+
+    # Проверяем активность потока (если файл обновлялся в последние 30 секунд)
+    is_active = datetime.now() - last_modified < timedelta(seconds=30)
+
+    # Получаем параметры запроса
+    format = request.GET.get('format', 'json')
+    details = request.GET.get('details', 'false').lower() == 'true'
+
+    # Формируем базовый ответ
+    response_data = {
+        'hls_url': request.build_absolute_uri('/media/stream.m3u8'),
         'codec': 'HEVC/h265',
-        'status': 'active'
-    })
+        'status': 'active' if is_active else 'inactive',
+        'last_modified': last_modified.isoformat(),
+        'client_ip': request.META.get('REMOTE_ADDR')
+    }
+
+    # Добавляем дополнительную информацию по запросу
+    if details:
+        response_data.update({
+            'segment_count': len([f for f in os.listdir(settings.MEDIA_ROOT) if f.endswith('.ts')]),
+            'server_time': datetime.now().isoformat(),
+            'user_agent': request.META.get('HTTP_USER_AGENT')
+        })
 
 class AllPools(APIView):
     permission_classes = [IsAuthenticated]

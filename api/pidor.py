@@ -1,5 +1,3 @@
-from requests import Response
-
 from .services.helpers import Pool_Values_Managment, Pool_Managment, Pool_Statistic_Managment
 pools_helper = Pool_Managment()
 value_helper = Pool_Values_Managment()
