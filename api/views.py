@@ -1,48 +1,18 @@
-from django.db.models import *
 from rest_framework.views import APIView
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import *
 from .pidor import update, get_all_pools, get_status, setting
 
-from django.http import StreamingHttpResponse
-import subprocess
+from django.http import JsonResponse
 
-def stream_video(request):
-    command = [
-        'ffmpeg',
-        '-i', 'rtsp://pool250:_250_pool@45.152.168.61:52037',  # RTSP-источник
-        '-c:v', 'libx264',  # Кодек H.264
-        '-preset', 'ultrafast',  # Быстрый режим кодирования
-        '-tune', 'zerolatency',  # Минимизация задержки
-        '-f', 'hls',  # Формат HLS
-        '-hls_time', '2',  # Длительность сегмента
-        '-hls_list_size', '5',  # Размер плейлиста
-        '-hls_flags', 'delete_segments',  # Удалять старые сегменты
-        'pipe:1'  # Передача данных через stdout
-    ]
-
-    try:
-        process = subprocess.Popen(
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-
-        def stream():
-            while True:
-                chunk = process.stdout.read(1024)  # Читаем данные по частям
-                if not chunk:
-                    break  # Если данных больше нет, завершаем поток
-                yield chunk
-
-        return StreamingHttpResponse(stream(), content_type='application/x-mpegURL')
-
-    except Exception as e:
-        print(f"Error streaming video: {e}")
-        return StreamingHttpResponse(status=500, content_type='text/plain', content="Error streaming video")
+def stream_info(request):
+    return JsonResponse({
+        'hls_url': '/media/stream.m3u8',
+        'codec': 'HEVC/h265',
+        'status': 'active'
+    })
 
 class AllPools(APIView):
     permission_classes = [IsAuthenticated]

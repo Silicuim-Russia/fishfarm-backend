@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
 
 from .views import *
 
+
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
@@ -14,5 +15,18 @@ urlpatterns = [
     # path('update/', update_parameters, name='update'),
     path('update/', OptimalValues.as_view(), name='update'),
     path('setting/', AllPools.as_view(), name='setting'),
-    path('stream/', stream_video, name='stream_video'),
+]
+
+from django.urls import path
+from api import views
+from api.consumers import StreamConsumer
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns = [
+    path('stream/', views.stream_info),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+websocket_urlpatterns = [
+    path('ws/stream/', StreamConsumer.as_asgi()),
 ]
