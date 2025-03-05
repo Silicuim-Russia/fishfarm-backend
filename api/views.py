@@ -13,15 +13,15 @@ import subprocess
 def stream_video(request):
     command = [
         'ffmpeg',
-        '-i', 'rtsp://pool250:_250_pool@45.152.168.61:52037',  # RTSP-источник
-        '-c:v', 'libx264',  # Кодек H.264
-        '-preset', 'ultrafast',  # Быстрый режим кодирования
-        '-tune', 'zerolatency',  # Минимизация задержки
-        '-f', 'hls',  # Формат HLS
-        '-hls_time', '2',  # Длительность сегмента
-        '-hls_list_size', '5',  # Размер плейлиста
-        '-hls_flags', 'delete_segments',  # Удалять старые сегменты
-        'pipe:1'  # Передача данных через stdout
+        '-i', 'rtsp://pool250:_250_pool@45.152.168.61:52037',
+        '-c:v', 'libx264',
+        '-preset', 'ultrafast',
+        '-tune', 'zerolatency',
+        '-f', 'hls',
+        '-hls_time', '2',
+        '-hls_list_size', '5',
+        '-hls_flags', 'delete_segments',
+        'pipe:1'
     ]
 
     try:
@@ -33,9 +33,9 @@ def stream_video(request):
 
         def stream():
             while True:
-                chunk = process.stdout.read(1024)  # Читаем данные по частям
+                chunk = process.stdout.read(1024)
                 if not chunk:
-                    break  # Если данных больше нет, завершаем поток
+                    break
                 yield chunk
 
         return StreamingHttpResponse(stream(), content_type='application/x-mpegURL')

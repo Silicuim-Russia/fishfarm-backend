@@ -111,6 +111,7 @@ def get_status(pool_id):
     id_list = pools_helper.take_data(pool_id=pool_id)
     optimal_values = value_helper.take_data(pool_id=pool_id)
     statistics_data = statistics_helper.take_data(pool_id=pool_id)
+    print(statistics_data)
     fields = ['temperature', 'oxygen_saturation', 'pH', 'orp',
               'salinity', 'water_level', 'turbidity', 'ammonia_content',
               'nitrite_content']
@@ -121,12 +122,12 @@ def get_status(pool_id):
     for i, field in enumerate(fields):
         to_return[field] = {
             'sensor_id' : id_list[4+i][0][field + '_sensor_id'],
-            'min_value': optimal_values[1 + 2*i][0]['min_' + field],
-            'max_value': optimal_values[1 + 2 * i + 1][0]['max_' + field],
-            'value' : statistics_data[2 + i][0][field],
-            'zone' : check_zone(statistics_data[2 + i][0][field],
-                                optimal_values[1 + 2*i][0]['min_' + field],
-                                optimal_values[1 + 2 * i + 1][0]['max_' + field])
+            'min_value': optimal_values[1 + 2*i][int(pool_id) - 1]['min_' + field],
+            'max_value': optimal_values[1 + 2 * i + 1][int(pool_id) - 1]['max_' + field],
+            'value' : statistics_data[2 + i][int(pool_id) - 1][field],
+            'zone' : check_zone(statistics_data[2 + i][int(pool_id) - 1][field],
+                                optimal_values[1 + 2*i][int(pool_id) - 1]['min_' + field],
+                                optimal_values[1 + 2 * i + 1][int(pool_id) - 1]['max_' + field])
         }
     return to_return
 def check_zone(value, min_value, max_value):
