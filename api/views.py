@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import *
-from .pidor import update, get_all_pools, get_status, setting
+from .processor import update, get_all_pools, get_status, setting
 
 from django.http import StreamingHttpResponse
 import subprocess
