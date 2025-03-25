@@ -15,4 +15,6 @@ urlpatterns = [
     path('update/', OptimalValues.as_view(), name='update'),
     path('setting/', AllPools.as_view(), name='setting'),
     path('stream/', stream_video, name='stream_video'),
+    path('sensors-data/', SensorsData.as_view(), name='sensors-data'),
+    path('thing-state/', ThingControl.as_view(), name='thing-state')
 ]

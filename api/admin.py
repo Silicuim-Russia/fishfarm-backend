@@ -4,3 +4,4 @@ from .models import *
 admin.site.register(Pool)
 admin.site.register(PoolOptimalValues)
 admin.site.register(PoolStatistic)
+admin.site.register(StatisticArduino)

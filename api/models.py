@@ -58,3 +58,23 @@ class PoolStatistic(models.Model):
 
     def __str__(self):
         return f"{self.pool_id})"
+
+
+class StatisticArduino(models.Model):
+    pool_id = models.AutoField(primary_key=True, default=0)
+    timestamp = models.DateTimeField(auto_now=True)
+    temperature = models.FloatField(null=True)
+    oxygen_saturation = models.FloatField(null=True)
+    pH = models.FloatField(null=True)
+    orp = models.FloatField(null=True)
+    salinity = models.FloatField(null=True)
+    water_level = models.FloatField(null=True)
+    turbidity = models.FloatField(null=True)
+    ammonia_content = models.FloatField(null=True)
+    nitrite_content = models.FloatField(null=True)
+
+
+class ControlThingsArduino(models.Model):
+    pool_id = models.AutoField(primary_key=True, default=0)
+    freezer = models.BooleanField()
+    feeder = models.BooleanField()

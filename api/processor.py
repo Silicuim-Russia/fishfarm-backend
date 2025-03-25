@@ -109,7 +109,6 @@ def get_status(pool_id):
     id_list = pools_helper.take_data(pool_id=pool_id)
     optimal_values = value_helper.take_data(pool_id=pool_id)
     statistics_data = statistics_helper.take_data(pool_id=pool_id)
-    print(statistics_data)
     fields = ['temperature', 'oxygen_saturation', 'pH', 'orp',
               'salinity', 'water_level', 'turbidity', 'ammonia_content',
               'nitrite_content']
