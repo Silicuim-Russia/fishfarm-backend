@@ -5,7 +5,8 @@ class Pool(models.Model):
     pool_id = models.AutoField(primary_key=True, default=0)
     pool_name = models.CharField(max_length=100, default='Крутой бассейн')
     pool_desc = models.CharField(max_length=255, default='0 ряд, 0 секция')
-    url = models.URLField(null=True)
+    rtsp_url = models.URLField(null=True)
+    hls_url = models.URLField(null=True)
     temperature_sensor_id = models.IntegerField(null=True)
     oxygen_saturation_sensor_id = models.IntegerField(null=True)
     pH_sensor_id = models.IntegerField(null=True)
@@ -76,5 +77,5 @@ class StatisticArduino(models.Model):
 
 class ControlThingsArduino(models.Model):
     pool_id = models.AutoField(primary_key=True, default=0)
-    freezer = models.BooleanField()
-    feeder = models.BooleanField()
+    freezer = models.BooleanField(default=False)
+    feeder = models.BooleanField(default=False)

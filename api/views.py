@@ -9,43 +9,6 @@ from .services.arduino_service import *
 from .serializers import *
 from .processor import update, get_all_pools, get_status, setting
 
-from django.http import StreamingHttpResponse
-import subprocess
-
-def stream_video(request):
-    command = [
-        'ffmpeg',
-        '-i', 'rtsp://pool250:_250_pool@45.152.168.61:52037',
-        '-c:v', 'libx264',
-        '-preset', 'ultrafast',
-        '-tune', 'zerolatency',
-        '-f', 'hls',
-        '-hls_time', '2',
-        '-hls_list_size', '5',
-        '-hls_flags', 'delete_segments',
-        'pipe:1'
-    ]
-
-    try:
-        process = subprocess.Popen(
-            command,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-
-        def stream():
-            while True:
-                chunk = process.stdout.read(1024)
-                if not chunk:
-                    break
-                yield chunk
-
-        return StreamingHttpResponse(stream(), content_type='application/x-mpegURL')
-
-    except Exception as e:
-        print(f"Error streaming video: {e}")
-        return StreamingHttpResponse(status=500, content_type='text/plain', content="Error streaming video")
-
 
 class AllPools(APIView):
     permission_classes = [IsAuthenticated]
@@ -90,4 +53,4 @@ class ThingControl(APIView):
             return Response({'is_success': True, 'state': ControlThingsArduinoManagement().thing_state(request.data)},
                             status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({'is_success': False, 'state': 'ERROR'})
+            return Response({'is_success': False, 'state': 'ERROR'}, status=status.HTTP_400_BAD_REQUEST)
