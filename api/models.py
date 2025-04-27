@@ -22,26 +22,14 @@ class Pool(models.Model):
 
 
 class PoolOptimalValues(models.Model):
-    pool_id = models.AutoField(primary_key=True, default=0)
-    min_temperature = models.FloatField(null=True, default=22.0)
-    max_temperature = models.FloatField(null=True, default=24.0)
-    min_oxygen_saturation = models.FloatField(null=True, default=7.5)
-    max_oxygen_saturation = models.FloatField(null=True, default=9.0)
-    min_pH = models.FloatField(null=True, default=6.5)
-    max_pH = models.FloatField(null=True, default=8.0)
-    min_orp = models.FloatField(null=True, default=100.0)
-    max_orp = models.FloatField(null=True, default=250.0)
-    min_salinity = models.FloatField(null=True, default=10.0)
-    max_salinity = models.FloatField(null=True, default=12.0)
-    min_water_level = models.FloatField(null=True, default=50.0)
-    max_water_level = models.FloatField(null=True, default=70.0)
-    min_turbidity = models.FloatField(null=True, default=5.0)
-    max_turbidity = models.FloatField(null=True, default=10.0)
-    min_ammonia_content = models.FloatField(null=True, default=0.0)
-    max_ammonia_content = models.FloatField(null=True, default=0.07)
-    min_nitrite_content = models.FloatField(null=True, default=0.0)
-    max_nitrite_content = models.FloatField(null=True, default=0.1)
+    id = models.IntegerField(primary_key=True)
+    pool_id = models.ForeignKey(Pool, on_delete=models.CASCADE)
+    sensor = models.CharField(max_length=20, null=True)
+    min = models.FloatField(null=True)
+    max = models.FloatField(null=True)
 
+    def __str__(self):
+        return f"(updated optimal for {self.pool_id})"
 
 
 class PoolStatistic(models.Model):

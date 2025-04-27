@@ -114,7 +114,7 @@ def get_status(pool_id):
               'nitrite_content']
     to_return = {
         'pool_id' : id_list[0][0]['pool_id'],
-        'timestamp':statistics_data[1][0]['timestamp']
+        'timestamp': statistics_data[1][0]['timestamp']
     }
     for i, field in enumerate(fields):
         to_return[field] = {
