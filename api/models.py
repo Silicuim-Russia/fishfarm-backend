@@ -34,7 +34,7 @@ class PoolOptimalValues(models.Model):
 
 class PoolStatistic(models.Model):
     pool_id = models.AutoField(primary_key=True, default=0)
-    timestamp = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(null=True)
     temperature = models.FloatField(null=True)
     oxygen_saturation = models.FloatField(null=True)
     pH = models.FloatField(null=True)

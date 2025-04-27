@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import (
 )
 
 from .views import *
+from .tasks import *
 
 urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -16,3 +17,11 @@ urlpatterns = [
     path('sensors-data/', SensorsData.as_view(), name='sensors-data'),
     # path('thing-state/', ThingControl.as_view(), name='thing-state')
 ]
+
+
+
+from background_task.models import Task
+Task.objects.all().delete()
+
+match_arduino_api(repeat=30)
+check_pools_health(repeat=60)
