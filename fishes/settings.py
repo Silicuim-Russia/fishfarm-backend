@@ -142,10 +142,17 @@ REST_FRAMEWORK = {
     )
 }
 
-# Настройки JWT
+# Settings for JWT
 from datetime import timedelta
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
+
+# Settings for HlsDecoder
+import os
+
+HLS_HEARTBEAT_CHECK_SECONDS = int(os.getenv('HLS_HEARTBEAT_CHECK_SECONDS', 10))
+HLS_STREAM_ROOT = os.getenv('HLS_STREAM_ROOT', BASE_DIR / 'hls_static')
+FFMPEG_PATH = os.getenv('FFMPEG_PATH', default='ffmpeg')

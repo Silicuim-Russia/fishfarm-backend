@@ -1,4 +1,4 @@
-from ..models import StatisticArduino, ControlThingsArduino
+from ..models import StatisticArduino
 
 
 class StatisticArduinoManagement:
@@ -17,13 +17,3 @@ class StatisticArduinoManagement:
         )
         new_data.save()
         return True
-
-
-class ControlThingsArduinoManagement:
-    def __init__(self):
-        self.ControlThingsArduino = ControlThingsArduino.objects
-
-    def thing_state(self, data):
-        thing_name = data.get('thing_name')
-        obj = self.ControlThingsArduino.get(pool_id=data.get('pool_id'))
-        return getattr(obj, thing_name)
