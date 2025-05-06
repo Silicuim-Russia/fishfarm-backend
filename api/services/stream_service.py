@@ -23,19 +23,35 @@ class HlsStreamService:
 
     def ffmpeg_command_builder(self, rtsp_url, nickname, output_path):
         from urllib.parse import urlparse
+        import os
+
         ffmpeg_command = app_settings.FFMPEG_PATH
         command = [ffmpeg_command, '-hide_banner', '-loglevel', 'error', '-y', '-fflags', 'nobuffer']
 
         if urlparse(rtsp_url).scheme == 'rtsp':
             command.extend(['-rtsp_transport', 'tcp'])
 
-        command.extend(['-i', rtsp_url,
-                        '-vsync', '0', '-copyts', '-c:v', 'copy', '-c:a', 'copy',
-                        '-hls_flags', 'delete_segments+append_list', '-f', 'hls',
-                        '-segment_list_flags', nickname + '_live',
-                        '-hls_time', '5', '-hls_list_size', '3',
-                        '-hls_segment_filename', output_path + '/%d.ts',
-                        output_path + '/index.m3u8'])
+        command.extend([
+            '-i', rtsp_url,
+            '-vsync', 'drop',
+            '-an',
+
+            '-c:v', 'libx264',
+            '-preset', 'ultrafast',
+            '-tune', 'zerolatency',
+            '-pix_fmt', 'yuv420p',
+
+            '-f', 'hls',
+            '-hls_flags', 'delete_segments+append_list',
+            '-hls_time', '5',
+            '-hls_list_size', '3',
+            '-hls_segment_filename', os.path.join(output_path, '%d.ts'),
+            '-segment_list_flags', '+live',
+
+            # Выходной файл
+            os.path.join(output_path, 'index.m3u8')
+        ])
+
         return command
 
     def channel_ready(self, stream_name):
@@ -44,7 +60,7 @@ class HlsStreamService:
         for file in os.listdir(stream_path):
             if file.split('.')[-1] == "ts":
                 fragment_count += 1
-        return fragment_count > 2
+        return fragment_count > 1
 
     def setup_pids(self):
         for channel in PoolStream.objects.all():
